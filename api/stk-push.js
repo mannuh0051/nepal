@@ -24,8 +24,7 @@ module.exports = async (req, res) => {
     // Environment variables (set in Vercel)
     const PAYLORE_API_KEY = process.env.PAYLORE_API_KEY;
     const PAYLORE_CHANNEL_ID = process.env.PAYLORE_CHANNEL_ID;
-    const PAYLORE_API_URL = process.env.PAYLORE_API_URL || 'https://api.paylore.com/v1'; // Replace with actual Paylore base URL
-
+    const PAYLORE_API_URL ='https://api.paylore.com/v1';
     if (!PAYLORE_API_KEY || !PAYLORE_CHANNEL_ID) {
         return res.status(500).json({ success: false, message: 'Missing Paylore credentials' });
     }
