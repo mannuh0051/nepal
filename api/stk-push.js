@@ -22,65 +22,55 @@ module.exports = async (req, res) => {
     if (!phone.startsWith('254')) phone = '254' + phone;
 
     // Environment variables (set in Vercel)
-    const CONSUMER_KEY = process.env.CONSUMER_KEY;
-    const CONSUMER_SECRET = process.env.CONSUMER_SECRET;
-    const SHORTCODE = process.env.SHORTCODE;
-    const PASSKEY = process.env.PASSKEY;
-    const BASE_URL = process.env.BASE_URL || 'https://sandbox.safaricom.co.ke'; // Use sandbox by default
+    const PAYLORE_API_KEY = process.env.PAYLORE_API_KEY;
+    const PAYLORE_CHANNEL_ID = process.env.PAYLORE_CHANNEL_ID;
+    const PAYLORE_API_URL = process.env.PAYLORE_API_URL || 'https://api.paylore.com/v1'; // Replace with actual Paylore base URL
 
-    if (!CONSUMER_KEY || !CONSUMER_SECRET || !SHORTCODE || !PASSKEY) {
-        return res.status(500).json({ success: false, message: 'Missing M-Pesa credentials' });
+    if (!PAYLORE_API_KEY || !PAYLORE_CHANNEL_ID) {
+        return res.status(500).json({ success: false, message: 'Missing Paylore credentials' });
     }
 
     try {
-        // 1. Get OAuth token
-        const auth = Buffer.from(`${CONSUMER_KEY}:${CONSUMER_SECRET}`).toString('base64');
-        const tokenRes = await axios.get(`${BASE_URL}/oauth/v1/generate?grant_type=client_credentials`, {
-            headers: { Authorization: `Basic ${auth}` }
-        });
-        const accessToken = tokenRes.data.access_token;
-
-        // 2. Generate timestamp and password
-        const timestamp = new Date().toISOString().replace(/[^0-9]/g, '').slice(0, 14);
-        const password = Buffer.from(`${SHORTCODE}${PASSKEY}${timestamp}`).toString('base64');
-
-        // 3. STK push payload
-        const stkPayload = {
-            BusinessShortCode: SHORTCODE,
-            Password: password,
-            Timestamp: timestamp,
-            TransactionType: 'CustomerPayBillOnline',
-            Amount: amount,
-            PartyA: phone,
-            PartyB: SHORTCODE,
-            PhoneNumber: phone,
-            CallBackURL: process.env.CALLBACK_URL || 'https://your-app.vercel.app/api/callback',
-            AccountReference: accountReference || 'DRRClaim',
-            TransactionDesc: transactionDesc || 'Processing fee'
+        // Paylore STK Push payload (adjust fields based on Paylore documentation)
+        const payload = {
+            channelId: PAYLORE_CHANNEL_ID,
+            phoneNumber: phone,
+            amount: amount,
+            reference: accountReference || 'DRRClaim',
+            description: transactionDesc || 'Processing fee',
+            // Include any additional required fields here
         };
 
-        const stkRes = await axios.post(`${BASE_URL}/mpesa/stkpush/v1/processrequest`, stkPayload, {
-            headers: { Authorization: `Bearer ${accessToken}` }
-        });
+        // Make the STK push request to Paylore
+        const response = await axios.post(
+            `${PAYLORE_API_URL}/stk/push`, // Replace with actual endpoint
+            payload,
+            {
+                headers: {
+                    'Authorization': `Bearer ${PAYLORE_API_KEY}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
 
-        // Success: response from Safaricom
-        if (stkRes.data.ResponseCode === '0') {
+        // Check Paylore response structure (adjust as needed)
+        if (response.data && response.data.success !== false) {
             return res.status(200).json({
                 success: true,
                 message: 'STK push sent successfully',
-                data: stkRes.data
+                data: response.data
             });
         } else {
             return res.status(200).json({
                 success: false,
-                message: stkRes.data.ResponseDescription || 'STK push failed'
+                message: response.data?.message || 'STK push failed'
             });
         }
     } catch (error) {
-        console.error(error);
+        console.error('Paylore error:', error.response?.data || error.message);
         return res.status(500).json({
             success: false,
-            message: error.response?.data?.errorMessage || error.message || 'Internal server error'
+            message: error.response?.data?.message || error.message || 'Internal server error'
         });
     }
 };
