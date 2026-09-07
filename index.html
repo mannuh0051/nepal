@@ -1,96 +1,1717 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Complete Your Payment</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nepal Disaster Risk Reduction Portal | Ministry of Home Affairs</title>
   <style>
-    body { font-family: sans-serif; padding: 20px; background: #f5f5f5; margin: 0; }
-    .container { max-width: 420px; margin: 40px auto; background: white; padding: 28px; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
-    h2 { margin-top: 0; text-align: center; }
-    label { display: block; margin: 14px 0 4px; font-weight: 600; font-size: 14px; }
-    input, button { width: 100%; padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
-    button { background: #0d5f2f; color: white; font-weight: 700; border: none; cursor: pointer; margin-top: 20px; }
-    button:disabled { opacity: 0.6; cursor: not-allowed; }
+    /* Reset & Base Fonts */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-    .screen { display: none; text-align: center; }
-    .screen.active { display: block; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #333333;
+      background-color: #f2f2f2;
+      line-height: 1.4;
+      font-size: 13px;
+    }
 
-    .spinner { width: 44px; height: 44px; border: 4px solid #e0e0e0; border-top-color: #0d5f2f; border-radius: 50%; margin: 24px auto; animation: spin 0.9s linear infinite; }
+    a {
+      color: #0b66c3;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .portal-container {
+      width: 100%;
+      max-width: 1340px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      min-height: 100vh;
+    }
+
+    /* Top Government Header */
+    .gov-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 24px;
+      background-color: #ffffff;
+      border-bottom: 1px solid #eaeaea;
+    }
+
+    .gov-branding {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .gov-emblem {
+      width: 78px;
+      height: 78px;
+      object-fit: contain;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15));
+    }
+
+    .gov-text h2 {
+      font-size: 18px;
+      color: #990000;
+      font-weight: 700;
+      margin-bottom: 2px;
+      letter-spacing: -0.2px;
+    }
+
+    .gov-text h1 {
+      font-size: 20px;
+      color: #0b66c3;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .gov-text p {
+      font-size: 14px;
+      color: #222222;
+      font-weight: 500;
+    }
+
+    .gov-flag-box {
+      display: flex;
+      align-items: center;
+    }
+
+    .gov-flag {
+      width: 58px;
+      height: 70px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    }
+
+    /* Main Blue Navigation Bar */
+    .main-nav {
+      background: linear-gradient(180deg, #1f78d1 0%, #1066c0 100%);
+      border-top: 1px solid #0a56a4;
+      border-bottom: 1px solid #094b8f;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .nav-links li {
+      position: relative;
+    }
+
+    .nav-links a {
+      display: block;
+      padding: 10px 14px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: background-color 0.15s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links li.active a {
+      background-color: #0b54a0;
+      text-decoration: none;
+    }
+
+    .nav-dropdown-caret {
+      font-size: 9px;
+      margin-left: 4px;
+      vertical-align: middle;
+      opacity: 0.9;
+    }
+
+    .nav-claim-highlight {
+      background: #e65100 !important;
+      color: #ffffff !important;
+      font-weight: 700 !important;
+      border-radius: 4px;
+      margin: 4px 6px;
+      padding: 7px 14px !important;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      animation: pulseAlert 2.5s infinite;
+      cursor: pointer;
+    }
+    .nav-claim-highlight:hover {
+      background: #d84315 !important;
+    }
+
+    @keyframes pulseAlert {
+      0% {
+        box-shadow: 0 0 0 0 rgba(230, 81, 0, 0.7);
+      }
+      70% {
+        box-shadow: 0 0 0 8px rgba(230, 81, 0, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(230, 81, 0, 0);
+      }
+    }
+
+    /* Major Updates Ticker */
+    .ticker-section {
+      margin: 10px 16px;
+      border: 1px solid #ff4d4f;
+      background-color: #ffffff;
+      display: flex;
+      align-items: stretch;
+      min-height: 84px;
+    }
+
+    .ticker-title {
+      background-color: #ffffff;
+      color: #0b559f;
+      font-weight: 800;
+      font-size: 14px;
+      width: 175px;
+      min-width: 175px;
+      padding: 12px 14px;
+      border-right: 1.5px solid #ff4d4f;
+      display: flex;
+      align-items: center;
+      letter-spacing: 0.3px;
+    }
+
+    .ticker-content {
+      padding: 8px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      font-size: 13.5px;
+      overflow: hidden;
+    }
+
+    .ticker-content a {
+      color: #0b66c3;
+      text-decoration: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .ticker-content a:hover {
+      text-decoration: underline;
+    }
+
+    .ticker-hotline {
+      color: #0b66c3;
+      font-weight: 600;
+    }
+
+    /* 3-Column Dashboard - Incidents left, Map center, Reports right */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 390px 1fr 210px;
+      gap: 16px;
+      padding: 4px 16px 16px 16px;
+    }
+
+    /* Left Sidebar: Incidents */
+    .incidents-summary-box {
+      border: 1px solid #dcdcdc;
+      background-color: #ffffff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .incidents-header {
+      background-color: #e60000;
+      color: #ffffff;
+      padding: 8px 12px;
+      font-size: 16px;
+      font-weight: 700;
+      text-align: center;
+      letter-spacing: 0.2px;
+    }
+
+    .incidents-action-notice {
+      background: #fff8e1;
+      border-bottom: 1px solid #ffe082;
+      padding: 6px 10px;
+      font-size: 11.5px;
+      color: #856404;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .incidents-buttons-grid {
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sidebar-btn-featured {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(180deg, #d32f2f 0%, #b71c1c 100%);
+      color: #ffffff;
+      border: 1px solid #b71c1c;
+      border-bottom: 4px solid #7f0000;
+      border-radius: 8px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: all 0.12s ease-in-out;
+      box-shadow: 0 4px 8px rgba(183, 28, 28, 0.35);
+      width: 100%;
+      text-align: left;
+      user-select: none;
+    }
+
+    .sidebar-btn-featured:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.08);
+    }
+
+    .sidebar-btn-featured:active {
+      transform: translateY(3px) !important;
+      border-bottom: 1px solid #7f0000;
+      box-shadow: 0 1px 3px rgba(183, 28, 28, 0.4);
+    }
+
+    .sidebar-sub-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .sidebar-btn-tile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      border-radius: 8px;
+      padding: 10px 8px;
+      cursor: pointer;
+      transition: all 0.12s ease-in-out;
+      text-align: center;
+      width: 100%;
+      color: #ffffff;
+      user-select: none;
+    }
+
+    .sidebar-btn-tile:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.08);
+    }
+
+    .sidebar-btn-tile:active {
+      transform: translateY(3px) !important;
+    }
+
+    .sidebar-btn-tile.unavailable {
+      background: #9e9e9e !important;
+      border: 1px solid #757575 !important;
+      border-bottom: 4px solid #616161 !important;
+      box-shadow: none !important;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+    .sidebar-btn-tile.unavailable:hover {
+      transform: none;
+      filter: none;
+    }
+    .sidebar-btn-tile.unavailable:active {
+      transform: none !important;
+    }
+
+    .sidebar-all-claims-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      background: linear-gradient(180deg, #f57c00 0%, #e65100 100%);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 10px 12px;
+      border: 1px solid #bf360c;
+      border-bottom: 3px solid #872300;
+      border-radius: 6px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      box-shadow: 0 3px 6px rgba(230, 81, 0, 0.3);
+      transition: all 0.12s ease-in-out;
+      margin-top: 4px;
+    }
+
+    .sidebar-all-claims-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.08);
+      box-shadow: 0 5px 10px rgba(230, 81, 0, 0.4);
+    }
+
+    .sidebar-all-claims-btn:active {
+      transform: translateY(2px);
+      border-bottom: 1px solid #872300;
+    }
+
+    /* Center Map */
+    .map-container {
+      background-color: #ffffff;
+      border: 1px solid #dcdcdc;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .map-header {
+      background-color: #1a7ae2;
+      color: #ffffff;
+      text-align: center;
+      padding: 8px 12px;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .map-body {
+      padding: 12px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .map-subtext {
+      text-align: center;
+      font-size: 11.5px;
+      color: #444;
+      margin-bottom: 8px;
+    }
+    .map-subtext strong {
+      color: #cc0000;
+      display: block;
+      font-size: 13px;
+    }
+
+    .nepal-svg-wrap {
+      width: 100%;
+      max-width: 580px;
+      height: auto;
+      margin: 8px 0;
+    }
+
+    .map-legend-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      width: 100%;
+      font-size: 11px;
+      color: #555;
+      padding: 4px 6px;
+      border-top: 1px solid #eeeeee;
+    }
+
+    .map-legend-items {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dot-neoc {
+      width: 8px;
+      height: 8px;
+      background-color: #cc0000;
+      border-radius: 50%;
+    }
+    .dot-peoc {
+      width: 8px;
+      height: 8px;
+      background-color: #8b0000;
+      border-radius: 2px;
+    }
+    .dot-deoc {
+      width: 8px;
+      height: 8px;
+      background-color: #f5a623;
+      border-radius: 50%;
+    }
+
+    .map-totals-bar {
+      font-size: 12px;
+      font-weight: 600;
+      color: #222;
+      text-align: center;
+      width: 100%;
+      padding-top: 6px;
+    }
+
+    /* Right Sidebar: Reports */
+    .reports-sidebar {
+      background-color: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .reports-header {
+      background: linear-gradient(180deg, #1a7ae2 0%, #0c62bd 100%);
+      color: #ffffff;
+      padding: 8px 14px;
+      font-size: 19px;
+      font-weight: 700;
+    }
+
+    .reports-list {
+      list-style: none;
+    }
+
+    .reports-list a {
+      display: block;
+      padding: 10px 14px;
+      background-color: #2187ec;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 500;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+      transition: background-color 0.15s ease;
+    }
+
+    .reports-list a:hover {
+      background-color: #0c62bd;
+      text-decoration: none;
+    }
+
+    /* Filter & Search Bar */
+    .filter-bar {
+      background-color: #f4f4f4;
+      border-top: 1px solid #e0e0e0;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 10px 16px;
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .filter-group label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #222222;
+    }
+
+    .filter-group select,
+    .filter-group input {
+      height: 28px;
+      padding: 3px 8px;
+      font-size: 12px;
+      border: 1px solid #cccccc;
+      border-radius: 2px;
+      background-color: #ffffff;
+      min-width: 130px;
+      color: #333;
+    }
+
+    .filter-group select:focus,
+    .filter-group input:focus {
+      outline: none;
+      border-color: #0b66c3;
+    }
+
+    .filter-actions {
+      display: flex;
+      gap: 6px;
+      margin-left: auto;
+    }
+
+    .btn-portal-blue {
+      background-color: #1b75bb;
+      color: #ffffff;
+      border: 1px solid #14598e;
+      padding: 4px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 2px;
+      cursor: pointer;
+      height: 28px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s ease;
+    }
+
+    .btn-portal-blue:hover {
+      background-color: #13598f;
+    }
+
+    /* Incident Data Table */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      padding: 0 16px 24px 16px;
+      background-color: #ffffff;
+    }
+
+    .incidents-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11.5px;
+      text-align: left;
+      margin-top: 10px;
+    }
+
+    .incidents-table th {
+      background-color: #f26522;
+      color: #ffffff;
+      font-weight: 700;
+      padding: 8px 6px;
+      border: 1px solid #e05515;
+      white-space: normal;
+      vertical-align: middle;
+      line-height: 1.25;
+    }
+
+    .incidents-table td {
+      padding: 7px 6px;
+      border: 1px solid #e5e5e5;
+      color: #333333;
+      white-space: nowrap;
+    }
+
+    .incidents-table tbody tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+
+    .incidents-table tbody tr:hover {
+      background-color: #fff8f0;
+    }
+
+    .incidents-table .total-row td {
+      font-weight: 800;
+      color: #0b559f;
+      border-top: 2px solid #0b559f;
+      background-color: #f7faff;
+    }
+
+    /* ==========================================================================
+       PAGE 2: REFUND ADVANCE TABLE (NO processing fee column)
+       ========================================================================== */
+    #page-claim {
+      display: none;
+      padding: 16px 24px 36px 24px;
+      background-color: #ffffff;
+    }
+
+    .claim-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 14px;
+      border-bottom: 2px solid #0d6efd;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn-back-portal {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: #ffffff;
+      color: #0d6efd;
+      border: 1.5px solid #0d6efd;
+      padding: 7px 16px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-back-portal:hover {
+      background-color: #0d6efd;
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    .claim-header-titles h2 {
+      font-size: 22px;
+      color: #990000;
+      font-weight: 800;
+    }
+    .claim-header-titles p {
+      font-size: 13px;
+      color: #555555;
+    }
+
+    .refund-table-wrap {
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 16px;
+      margin-bottom: 24px;
+      overflow-x: auto;
+    }
+
+    .refund-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      text-align: left;
+    }
+
+    .refund-table th {
+      background: linear-gradient(180deg, #1f78d1 0%, #0d62be 100%);
+      color: #ffffff;
+      padding: 12px 14px;
+      font-weight: 700;
+      border: 1px solid #0b55a8;
+      white-space: nowrap;
+    }
+
+    .refund-table td {
+      padding: 12px 14px;
+      border: 1px solid #e2e8f0;
+      vertical-align: middle;
+    }
+
+    .refund-table tbody tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+
+    .refund-table tbody tr:hover {
+      background-color: #fff9f4;
+    }
+
+    .refund-table .amount-usd {
+      font-weight: 800;
+      color: #0b66c3;
+      font-size: 16px;
+    }
+    .refund-table .amount-ksh {
+      font-weight: 700;
+      color: #2e7d32;
+    }
+    .refund-table .fee-advance {
+      font-weight: 600;
+      color: #e65100;
+    }
+    .refund-table .total-repayable {
+      font-weight: 800;
+      color: #1e293b;
+    }
+
+    .btn-claim-now {
+      background: linear-gradient(180deg, #f26522 0%, #d84315 100%);
+      color: #ffffff;
+      border: 1px solid #bf360c;
+      border-bottom: 3px solid #872300;
+      border-radius: 5px;
+      padding: 6px 18px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(216, 67, 21, 0.3);
+      transition: all 0.12s ease-in-out;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .btn-claim-now:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(216, 67, 21, 0.4);
+    }
+
+    .btn-claim-now:active {
+      transform: translateY(2px);
+      border-bottom: 1px solid #872300;
+    }
+
+    .btn-claim-now.claimed {
+      background: #2e7d32 !important;
+      border: 1px solid #1b5e20 !important;
+      border-bottom: 1px solid #1b5e20 !important;
+      color: #ffffff !important;
+      cursor: default;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    /* ==========================================================================
+       PAGE 3: COMPENSATION CLAIM (Dark Grey) - PROCESSING FEE SHOWN HERE
+       ========================================================================== */
+    #page-compensation {
+      display: none;
+      padding: 16px 24px 36px 24px;
+      background-color: #ffffff;
+    }
+
+    .comp-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 14px;
+      border-bottom: 2px solid #0d6efd;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .comp-header h2 {
+      font-size: 22px;
+      color: #990000;
+      font-weight: 800;
+    }
+    .comp-header p {
+      font-size: 13px;
+      color: #555555;
+    }
+
+    .comp-form-card {
+      background: linear-gradient(145deg, #2a2f3b 0%, #1a1e26 100%);
+      border: 1px solid #3a3f4b;
+      border-radius: 16px;
+      padding: 28px 30px;
+      max-width: 600px;
+      margin: 0 auto;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+      color: #ffffff;
+    }
+
+    .comp-form-card .form-group {
+      margin-bottom: 20px;
+    }
+
+    .comp-form-card label {
+      display: block;
+      font-weight: 700;
+      font-size: 14px;
+      color: #e2e8f0;
+      margin-bottom: 6px;
+      letter-spacing: 0.3px;
+    }
+
+    .comp-form-card input[type="text"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #4a4f5b;
+      border-radius: 8px;
+      font-size: 16px;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(4px);
+      transition: border 0.2s, background 0.2s;
+    }
+
+    .comp-form-card input[type="text"]:focus {
+      outline: none;
+      border-color: #0b66c3;
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 0 3px rgba(11, 102, 195, 0.3);
+    }
+
+    .comp-form-card input[type="text"]::placeholder {
+      color: #9ca3af;
+    }
+
+    /* Package summary on compensation page */
+    .package-summary {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid #4a4f5b;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 18px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 14px;
+    }
+    .package-summary .label {
+      color: #9ca3af;
+    }
+    .package-summary .value {
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+
+    .comp-fee-display {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1px solid #4a4f5b;
+      font-size: 18px;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+    .comp-fee-display .fee-amount {
+      color: #ffb74d;
+      font-size: 28px;
+      font-weight: 900;
+    }
+
+    .btn-pay-claim {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(180deg, #1f78d1 0%, #0d62be 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      font-size: 20px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 8px;
+      box-shadow: 0 4px 14px rgba(13, 98, 190, 0.4);
+    }
+
+    .btn-pay-claim:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(13, 98, 190, 0.5);
+    }
+
+    .btn-pay-claim:active {
+      transform: translateY(2px);
+    }
+
+    .btn-pay-claim:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* ── STK Waiting Overlay ── */
+    .stk-waiting-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 20px;
+    }
+    .stk-waiting-overlay.open {
+      display: flex;
+    }
+    .stk-waiting-box {
+      background: white;
+      border-radius: 24px;
+      padding: 32px 24px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      animation: fadeIn 0.3s ease;
+    }
+    .stk-waiting-box .pulse-icon {
+      width: 72px;
+      height: 72px;
+      border: 6px solid #e0e0e0;
+      border-top-color: #0d5f2f;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+    .stk-waiting-box .title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #1b49b5;
+      margin-bottom: 8px;
+    }
+    .stk-waiting-box .sub {
+      font-size: 0.9rem;
+      color: #333;
+      margin-bottom: 6px;
+    }
+    .stk-waiting-box .phone {
+      font-weight: 700;
+      color: #0d5f2f;
+    }
+    .stk-waiting-box .dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 20px 0;
+    }
+    .stk-waiting-box .dots span {
+      width: 10px;
+      height: 10px;
+      background: #1b49b5;
+      border-radius: 50%;
+      animation: procDotPulse 1.2s infinite ease-in-out both;
+    }
+    .stk-waiting-box .dots span:nth-child(1) { animation-delay: -0.32s; }
+    .stk-waiting-box .dots span:nth-child(2) { animation-delay: -0.16s; }
+    @keyframes procDotPulse {
+      0%,80%,100% { transform: scale(0); }
+      40% { transform: scale(1); }
+    }
+    .stk-waiting-box .listening {
+      background: #e8f5e9;
+      border-radius: 24px;
+      padding: 8px 16px;
+      font-size: 0.78rem;
+      color: #0d5f2f;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .stk-waiting-box .listening .dot {
+      width: 8px;
+      height: 8px;
+      background: #0ca678;
+      border-radius: 50%;
+      display: inline-block;
+      animation: pulse 1.5s infinite;
+    }
+    .stk-waiting-box .note {
+      font-size: 0.68rem;
+      color: #adb5bd;
+      margin-top: 14px;
+    }
     @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes pulse {
+      0%,100% { opacity:1; }
+      50% { opacity:0.5; }
+    }
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(10px); }
+      to { opacity:1; transform:translateY(0); }
+    }
 
-    .icon-circle { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 12px auto 20px; font-size: 32px; }
-    .icon-success { background: #e6f7ee; color: #0ca678; }
-    .icon-fail { background: #ffecec; color: #fa5252; }
+    /* Contact Page */
+    #contact-page {
+      display: none;
+      padding: 40px 24px;
+      text-align: center;
+      background: #ffffff;
+    }
 
-    p.sub { color: #666; font-size: 14px; margin-top: 8px; }
-    .amount { font-size: 28px; font-weight: 800; margin: 8px 0; }
+    #contact-page .contact-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+
+    #contact-page .contact-title {
+      font-size: 28px;
+      font-weight: 900;
+      color: #0b66c3;
+      margin-bottom: 8px;
+    }
+
+    #contact-page .contact-message {
+      font-size: 18px;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+
+    #contact-page .contact-sub {
+      font-size: 15px;
+      color: #475569;
+    }
+
+    #contact-page .contact-btn {
+      margin-top: 20px;
+      display: inline-block;
+    }
+
+    /* Footer */
+    .portal-footer {
+      background-color: #263238;
+      color: #cfd8dc;
+      padding: 16px 24px;
+      text-align: center;
+      font-size: 12px;
+      border-top: 3px solid #0d6efd;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+      .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .filter-actions {
+        margin-left: 0;
+      }
+      .refund-table {
+        font-size: 12px;
+      }
+      .refund-table th,
+      .refund-table td {
+        padding: 8px 10px;
+      }
+    }
+    @media (max-width: 600px) {
+      .gov-header {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .gov-branding {
+        flex-wrap: wrap;
+      }
+      .comp-form-card {
+        padding: 16px;
+      }
+    }
   </style>
 </head>
 <body>
-<div class="container">
 
-  <!-- FORM SCREEN -->
-  <div id="screen-form" class="screen active">
-    <h2>Pay with M-Pesa</h2>
+  <div class="portal-container">
 
-    <label for="phone">Phone number</label>
-    <input type="tel" id="phone" placeholder="0712345678" value="0712345678">
+    <!-- ========================================================================
+    TOP GOVERNMENT HEADER
+    ======================================================================== -->
+    <header class="gov-header">
+      <div class="gov-branding">
+        <svg class="gov-emblem" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="48" fill="#d32f2f" stroke="#ffffff" stroke-width="2"/>
+          <path d="M15,65 Q50,45 85,65 L85,78 Q50,62 15,78 Z" fill="#b71c1c" />
+          <polygon points="50,22 64,52 36,52" fill="#ffffff"/>
+          <polygon points="34,30 48,54 20,54" fill="#ffffff"/>
+          <polygon points="66,30 80,54 52,54" fill="#ffffff"/>
+          <polygon points="50,26 62,50 38,50" fill="#e0f2fe"/>
+          <circle cx="50" cy="58" r="9" fill="#ffd54f"/>
+          <path d="M42,57 C45,54 55,54 58,57 L54,64 L46,64 Z" fill="#c49000"/>
+          <circle cx="20" cy="46" r="4" fill="#ff1744"/>
+          <circle cx="24" cy="36" r="4" fill="#ff1744"/>
+          <circle cx="32" cy="27" r="4" fill="#ff1744"/>
+          <circle cx="42" cy="21" r="4" fill="#ff1744"/>
+          <circle cx="58" cy="21" r="4" fill="#ff1744"/>
+          <circle cx="68" cy="27" r="4" fill="#ff1744"/>
+          <circle cx="76" cy="36" r="4" fill="#ff1744"/>
+          <circle cx="80" cy="46" r="4" fill="#ff1744"/>
+          <rect x="18" y="78" width="64" height="12" rx="3" fill="#ffebee" stroke="#b71c1c" stroke-width="1"/>
+          <text x="50" y="87" font-size="6.5" font-family="Arial, sans-serif" font-weight="bold" fill="#b71c1c" text-anchor="middle">जननी जन्मभूमिश्च स्वर्गादपि गरीयसी</text>
+        </svg>
+        <div class="gov-text">
+          <h2>Government of Nepal</h2>
+          <h1>Nepal Disaster Risk Reduction Portal</h1>
+          <p>Kathmandu, Nepal</p>
+        </div>
+      </div>
+      <div class="gov-flag-box">
+        <svg class="gov-flag" viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="8,6 74,48 30,48 74,94 8,94" fill="#003893"/>
+          <polygon points="12,12 65,46 26,46 65,88 12,88" fill="#DC143C"/>
+          <path d="M22,33 A7,7 0 0,0 36,33 A6,6 0 0,1 24,33 Z" fill="#ffffff"/>
+          <circle cx="29" cy="32" r="3" fill="#ffffff"/>
+          <circle cx="29" cy="68" r="6" fill="#ffffff"/>
+          <polygon points="29,59 31,63 29,61 27,63" fill="#ffffff"/>
+          <polygon points="29,77 31,73 29,75 27,73" fill="#ffffff"/>
+          <polygon points="20,68 24,70 22,68 24,66" fill="#ffffff"/>
+          <polygon points="38,68 34,70 36,68 34,66" fill="#ffffff"/>
+        </svg>
+      </div>
+    </header>
 
-    <label for="amount">Amount (KSh)</label>
-    <input type="number" id="amount" placeholder="200" value="200">
+    <!-- ========================================================================
+    MAIN BLUE NAVIGATION BAR
+    ======================================================================== -->
+    <nav class="main-nav">
+      <ul class="nav-links">
+        <li class="active" id="nav-home-btn"><a href="#" onclick="showPage('portal'); return false;">Home</a></li>
+        <li><a href="#">PM Relief <span class="nav-dropdown-caret">▼</span></a></li>
+        <li><a href="#">Relief Distributed <span class="nav-dropdown-caret">▼</span></a></li>
+        <li><a href="#">Press Release <span class="nav-dropdown-caret">▼</span></a></li>
+        <li><a href="#">Volunteer</a></li>
+        <li><a href="#">Feedback</a></li>
+        <li><a href="#">COVID19 <span class="nav-dropdown-caret">▼</span></a></li>
+        <li><a href="#">Earthquake 2015 <span class="nav-dropdown-caret">▼</span></a></li>
+        <li><a href="#">Monsoon 2078 BS</a></li>
+        <li><a href="#">Contact Persons <span class="nav-dropdown-caret">▼</span></a></li>
+        <li id="nav-claim-btn"><a href="#" onclick="showPage('claim'); return false;">💰 Refund Packages</a></li>
+      </ul>
 
-    <label for="reference">Reference (optional)</label>
-    <input type="text" id="reference" placeholder="ORDER-123" value="">
+      <div class="nav-claim-highlight" onclick="showPage('claim')">
+        💰 Claim Refund Advance →
+      </div>
+    </nav>
 
-    <button id="sendBtn">Pay Now</button>
-  </div>
+    <!-- ========================================================================
+    PAGE 1: MAIN PORTAL VIEW
+    ======================================================================== -->
+    <div id="page-portal">
+      <!-- MAJOR UPDATES TICKER -->
+      <div class="ticker-section">
+        <div class="ticker-title">MAJOR UPDATES</div>
+        <div class="ticker-content">
+          <a href="#">बर्दिया विपद् पूर्वतयारी तथा प्रतिकार्य योजना (DPRP) २०८३</a>
+          <a href="#">प्रेस विज्ञप्ति (मिति २०८३।०३।२६)</a>
+          <a href="#">मिति २०८३।०५।१९ गते १३:०० बजे सम्मको राजमार्ग विवरण ।</a>
+          <div class="ticker-hotline">
+            विपद् सम्बन्धी सूचना, समस्या, गुनासो र सुझावका लागि हटलाइन नम्बर <span style="color:#d32f2f; font-weight:700;">११४९</span> मा सम्पर्क गर्नुहुन अनुरोध।
+          </div>
+        </div>
+      </div>
 
-  <!-- WAITING SCREEN -->
-  <div id="screen-waiting" class="screen">
-    <h2>Check your phone</h2>
-    <div class="spinner"></div>
-    <p class="sub">Enter your M-Pesa PIN to complete the payment of<br><strong id="waitingAmount"></strong></p>
-  </div>
+      <!-- 3-COLUMN DASHBOARD -->
+      <div class="dashboard-grid">
+        <!-- COLUMN 1: INCIDENTS -->
+        <section class="incidents-summary-box">
+          <div class="incidents-header">Reported No. of Incidents (Last 7 days)</div>
+          <div class="incidents-action-notice">
+            <span>⚡</span>
+            <span>Click any button below to claim your refund advance:</span>
+          </div>
+          <div class="incidents-buttons-grid">
+            <!-- 1. Landslide -->
+            <button class="sidebar-btn-featured" onclick="showPage('claim')">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size: 26px;">⛰️</span>
+                <div>
+                  <div style="font-size:18px; font-weight:800;">Landslide (90)</div>
+                  <div style="font-size:11px; opacity:0.9;">High Incident Region</div>
+                </div>
+              </div>
+              <div style="background:#ffffff; color:#b71c1c; font-weight:800; font-size:11px; padding:4px 10px; border-radius:12px;">CLAIM →</div>
+            </button>
+            <!-- 2 & 3: Snake Bite & Fire (UNAVAILABLE) -->
+            <div class="sidebar-sub-grid">
+              <button class="sidebar-btn-tile unavailable" style="cursor:not-allowed;">
+                <div style="font-size:22px;">💉</div>
+                <div style="font-weight:800; font-size:14px;">Snake Bite (56)</div>
+                <span style="background:rgba(255,255,255,0.9); color:#616161; font-weight:800; font-size:10px; padding:2px 8px; border-radius:8px;">UNAVAILABLE</span>
+              </button>
+              <button class="sidebar-btn-tile unavailable" style="cursor:not-allowed;">
+                <div style="font-size:22px;">🔥</div>
+                <div style="font-weight:800; font-size:14px;">Fire (27)</div>
+                <span style="background:rgba(255,255,255,0.9); color:#616161; font-weight:800; font-size:10px; padding:2px 8px; border-radius:8px;">UNAVAILABLE</span>
+              </button>
+            </div>
+            <!-- 4 & 5: Flood & Heavy Rainfall -->
+            <div class="sidebar-sub-grid">
+              <button class="sidebar-btn-tile" style="background:linear-gradient(180deg,#0288d1,#01579b);border:1px solid #014377;border-bottom:4px solid #002f54;box-shadow:0 4px 8px rgba(1,87,155,0.35);" onclick="showPage('claim')">
+                <div style="font-size:22px;">🌊</div>
+                <div style="font-weight:800; font-size:14px;">Flood (23)</div>
+                <span style="background:rgba(255,255,255,0.9); color:#01579b; font-weight:800; font-size:10px; padding:2px 8px; border-radius:8px;">CLAIM →</span>
+              </button>
+              <button class="sidebar-btn-tile" style="background:linear-gradient(180deg,#00897b,#004d40);border:1px solid #00332c;border-bottom:4px solid #00201b;box-shadow:0 4px 8px rgba(0,77,64,0.35);" onclick="showPage('claim')">
+                <div style="font-size:22px;">🌧️</div>
+                <div style="font-weight:800; font-size:14px;">Rainfall (17)</div>
+                <span style="background:rgba(255,255,255,0.9); color:#004d40; font-weight:800; font-size:10px; padding:2px 8px; border-radius:8px;">CLAIM →</span>
+              </button>
+            </div>
+            <button class="sidebar-all-claims-btn" onclick="showPage('claim')">⚡ VIEW ALL REFUND PACKAGES →</button>
+            <a href="#" class="more-summary-link" onclick="showPage('claim'); return false;">View Refund Table &gt;&gt;</a>
+          </div>
+        </section>
 
-  <!-- SUCCESS SCREEN -->
-  <div id="screen-success" class="screen">
-    <div class="icon-circle icon-success">✓</div>
-    <h2>Payment Successful</h2>
-    <div class="amount" id="successAmount"></div>
-    <p class="sub" id="successRef"></p>
-  </div>
+        <!-- COLUMN 2: MAP -->
+        <main class="map-container">
+          <div class="map-header">EOCs in Nepal</div>
+          <div class="map-body">
+            <div class="map-subtext">
+              <span>Ministry of Home Affairs - National Emergency Operation Center</span>
+              <strong>Network of Emergency Operation Centers (EOCs) in Nepal</strong>
+            </div>
+            <svg class="nepal-svg-wrap" viewBox="0 0 620 300" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="mapGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ffb74d" />
+                  <stop offset="50%" stop-color="#ffa726" />
+                  <stop offset="100%" stop-color="#fb8c00" />
+                </linearGradient>
+              </defs>
+              <path d="M 30,120 Q 75,90 120,70 Q 175,60 240,75 Q 320,105 380,125 Q 450,150 510,180 Q 570,210 595,245 Q 560,265 490,265 Q 410,250 340,230 Q 260,225 190,220 Q 120,205 60,180 Q 25,150 30,120 Z" fill="url(#mapGrad)" stroke="#c76d00" stroke-width="2.5" />
+              <path d="M 120,70 Q 110,140 120,205" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="3,3" fill="none"/>
+              <path d="M 210,68 Q 200,150 215,220" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="3,3" fill="none"/>
+              <path d="M 300,95 Q 295,160 305,225" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="3,3" fill="none"/>
+              <path d="M 380,125 Q 375,180 385,238" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="3,3" fill="none"/>
+              <path d="M 470,165 Q 460,210 470,255" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="3,3" fill="none"/>
+              <text x="65" y="145" font-size="10" font-weight="bold" fill="#5c2d00">Sudurpashchim</text>
+              <text x="150" y="130" font-size="10" font-weight="bold" fill="#5c2d00">Karnali</text>
+              <text x="245" y="150" font-size="10" font-weight="bold" fill="#5c2d00">Lumbini</text>
+              <text x="330" y="165" font-size="10" font-weight="bold" fill="#5c2d00">Gandaki</text>
+              <text x="415" y="195" font-size="10" font-weight="bold" fill="#5c2d00">Bagmati</text>
+              <text x="495" y="225" font-size="10" font-weight="bold" fill="#5c2d00">Madhesh</text>
+              <text x="535" y="210" font-size="10" font-weight="bold" fill="#5c2d00">Koshi</text>
+              <circle cx="430" cy="190" r="7" fill="#d32f2f" stroke="#ffffff" stroke-width="2"/>
+              <text x="430" y="180" font-size="9" font-weight="bold" fill="#990000" text-anchor="middle">Kathmandu (NEOC)</text>
+              <rect x="75" y="150" width="8" height="8" fill="#8b0000" stroke="#fff"/>
+              <rect x="160" y="140" width="8" height="8" fill="#8b0000" stroke="#fff"/>
+              <rect x="250" y="165" width="8" height="8" fill="#8b0000" stroke="#fff"/>
+              <rect x="345" y="175" width="8" height="8" fill="#8b0000" stroke="#fff"/>
+              <rect x="490" y="235" width="8" height="8" fill="#8b0000" stroke="#fff"/>
+              <rect x="545" y="225" width="8" height="8" fill="#8b0000" stroke="#fff"/>
+              <circle cx="50" cy="130" r="3.5" fill="#f57c00" stroke="#fff"/>
+              <circle cx="95" cy="115" r="3.5" fill="#f57c00" stroke="#fff"/>
+              <circle cx="130" cy="100" r="3.5" fill="#f57c00" stroke="#fff"/>
+              <circle cx="180" cy="120" r="3.5" fill="#f57c00" stroke="#fff"/>
+              <circle cx="210" cy="180" r="3.5" fill="#f57c00" stroke="#fff"/>
+              <circle cx="280" cy="140" r="3.5" fill="#f57c00" stroke="#fff"/>
+              <circle cx="360" cy="150" r="3.5" fill="#f57c00" stroke="#fff"/>
+              <circle cx="460" cy="180" r="3.5" fill="#f57c00" stroke="#fff"/>
+              <circle cx="510" cy="205" r="3.5" fill="#f57c00" stroke="#fff"/>
+              <circle cx="560" cy="245" r="3.5" fill="#f57c00" stroke="#fff"/>
+            </svg>
+            <div class="map-legend-row">
+              <div class="map-legend-items">
+                <span style="font-weight:700; margin-bottom:2px;">Legend:</span>
+                <div class="legend-item"><span class="dot-neoc"></span> NEOC (National)</div>
+                <div class="legend-item"><span class="dot-peoc"></span> PEOC (Provincial)</div>
+                <div class="legend-item"><span class="dot-deoc"></span> DEOC (District)</div>
+              </div>
+              <div style="font-size: 10.5px; color:#666;">
+                Map Data: Department of Survey<br>Updated on: 2026-09-05
+              </div>
+            </div>
+            <div class="map-totals-bar">
+              1 National EOC; 7 Provincial EOCs; 70 District EOCs
+            </div>
+          </div>
+        </main>
 
-  <!-- FAILURE SCREEN -->
-  <div id="screen-failure" class="screen">
-    <div class="icon-circle icon-fail">✕</div>
-    <h2>Payment Not Completed</h2>
-    <p class="sub">The payment wasn't completed. You can try again.</p>
-    <button id="retryBtn">Try Again</button>
-  </div>
+        <!-- COLUMN 3: REPORTS -->
+        <aside class="reports-sidebar">
+          <div class="reports-header">Reports</div>
+          <ul class="reports-list">
+            <li><a href="#">DRR Acts and policies</a></li>
+            <li><a href="#">National DRR Policy and Strategic Action Plan</a></li>
+            <li><a href="#">All DRR Document</a></li>
+            <li><a href="#">Nepal Risk Information</a></li>
+            <li><a href="#">About Nepal</a></li>
+            <li><a href="#">Disaster Focal Person</a></li>
+            <li><a href="#">Incident Maps</a></li>
+            <li><a href="#">Videos</a></li>
+          </ul>
+        </aside>
+      </div>
 
-</div>
+      <!-- FILTER & SEARCH BAR -->
+      <div class="filter-bar">
+        <div class="filter-group">
+          <label>Source</label>
+          <select id="filter-source">
+            <option value="">--Select a option--</option>
+            <option value="neoc">NEOC Emergency Feed</option>
+            <option value="police">Nepal Police HQ</option>
+            <option value="district">District Administration Office</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Incident Type</label>
+          <select id="filter-incident" onchange="filterPortalTable()">
+            <option value="">--Select Incident--</option>
+            <option value="Landslide">Landslide</option>
+            <option value="Snake Bite">Snake Bite</option>
+            <option value="Fire">Fire</option>
+            <option value="Flood">Flood</option>
+            <option value="Heavy Rainfall">Heavy Rainfall</option>
+            <option value="Thunderbolt">Thunderbolt</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>District</label>
+          <select id="filter-district" onchange="filterPortalTable()">
+            <option value="">--Select a option--</option>
+            <option value="Kalikot">Kalikot</option>
+            <option value="Salyan">Salyan</option>
+            <option value="Bajura">Bajura</option>
+            <option value="Dadeldhura">Dadeldhura</option>
+            <option value="Humla">Humla</option>
+            <option value="Kaski">Kaski</option>
+            <option value="Kathmandu">Kathmandu</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Local Level</label>
+          <select id="filter-local-level">
+            <option value="">--Select Local Level--</option>
+            <option value="Shubha Kalika">Shubha Kalika Rural Municipality</option>
+            <option value="Darma">Darma Rural Municipality</option>
+            <option value="Sannitriveni">Sannitriveni Rural Municipality</option>
+            <option value="Himali">Himali Rural Municipality</option>
+            <option value="Navadurga">Navadurga Rural Municipality</option>
+            <option value="Kharpunath">Kharpunath Rural Municipality</option>
+            <option value="Machhapuchhre">Machhapuchhre Rural Municipality</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>From</label>
+          <input type="text" value="2026-09-01" id="filter-from-date">
+        </div>
+        <div class="filter-group">
+          <label>To</label>
+          <input type="text" value="2026-09-05" id="filter-to-date">
+        </div>
+        <div class="filter-actions">
+          <button class="btn-portal-blue" onclick="filterPortalTable()">Search</button>
+          <button class="btn-portal-blue" onclick="exportPortalTableCSV()">Export</button>
+          <button class="btn-portal-blue" onclick="window.print()">Print</button>
+        </div>
+      </div>
 
-<script>
-  (function() {
-    const screens = {
-      form: document.getElementById('screen-form'),
-      waiting: document.getElementById('screen-waiting'),
-      success: document.getElementById('screen-success'),
-      failure: document.getElementById('screen-failure')
-    };
+      <!-- MAIN INCIDENTS DATA TABLE -->
+      <div class="table-container">
+        <table class="incidents-table" id="portal-incidents-table">
+          <thead>
+            <tr>
+              <th style="width:38px;">S.No.</th>
+              <th>District</th>
+              <th>Local Level</th>
+              <th>Incident</th>
+              <th>Incident Date</th>
+              <th>Death Male</th>
+              <th>Death Female</th>
+              <th>Death Unknown</th>
+              <th>Total Death</th>
+              <th>Missing People</th>
+              <th>Affected Family</th>
+              <th>Estimated Loss (KSH)</th>
+              <th>Injured</th>
+              <th>Govt. Houses Fully Damaged</th>
+              <th>Govt. Houses Partially Damaged</th>
+              <th>Private Houses Fully Damaged</th>
+            </tr>
+          </thead>
+          <tbody id="portal-table-body"></tbody>
+          <tfoot>
+            <tr class="total-row">
+              <td colspan="5">Total</td>
+              <td id="tot-male">6874</td>
+              <td id="tot-female">7234</td>
+              <td id="tot-unknown">42</td>
+              <td id="tot-death">49503</td>
+              <td id="tot-missing">3756</td>
+              <td id="tot-affected">7168075</td>
+              <td id="tot-loss">5,605,981,3081</td>
+              <td id="tot-injured">102536</td>
+              <td id="tot-gov-full">2726</td>
+              <td id="tot-gov-part">3944</td>
+              <td id="tot-pvt-full">18250</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div> <!-- End Page 1 -->
 
-    function showScreen(name) {
-      Object.values(screens).forEach(s => s.classList.remove('active'));
-      screens[name].classList.add('active');
+    <!-- ========================================================================
+    PAGE 2: REFUND ADVANCE TABLE (NO processing fee column)
+    ======================================================================== -->
+    <div id="page-claim">
+      <div class="claim-top-bar">
+        <div class="claim-header-titles">
+          <h2>Refund Advance Packages</h2>
+          <p>Government of Nepal • Disaster Relief Compensation</p>
+        </div>
+        <div>
+          <button class="btn-back-portal" onclick="showPage('portal')">
+            <span>←</span> Back to Main Portal
+          </button>
+        </div>
+      </div>
+
+      <div class="refund-table-wrap">
+        <table class="refund-table" id="refund-table">
+          <thead>
+            <tr>
+              <th>REFUND ADVANCE (USD)</th>
+              <th>EQUIVALENT (KSH)</th>
+              <th>ADVANCE FEE (10%)</th>
+              <th>TOTAL REPAYABLE</th>
+              <th>ACTION</th>
+            </tr>
+          </thead>
+          <tbody id="refund-table-body">
+            <!-- rows injected by JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <div style="background:#f0f7ff; border:1.5px solid #0b66c3; border-radius:8px; padding:14px 20px; margin-top:6px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px;">
+        <div>
+          <span style="font-size:13px; font-weight:600; color:#1e293b;">🏛️ Government Intent:</span>
+          <span style="font-size:13px; color:#475569;">Transparent, fair &amp; timely disbursement of refund advances.</span>
+        </div>
+        <div>
+          <span style="font-size:12px; font-weight:700; color:#475569;">📞 Hotline: 1149</span>
+        </div>
+      </div>
+    </div> <!-- End Page 2 -->
+
+    <!-- ========================================================================
+    PAGE 3: COMPENSATION CLAIM (Dark Grey) - PROCESSING FEE SHOWN HERE
+    ======================================================================== -->
+    <div id="page-compensation">
+      <div class="comp-top-bar">
+        <div class="comp-header">
+          <h2>Claim Compensation</h2>
+          <p>Enter your M‑Pesa number to pay the processing fee.</p>
+        </div>
+        <div>
+          <button class="btn-back-portal" onclick="showPage('claim')">
+            <span>←</span> Back to Packages
+          </button>
+        </div>
+      </div>
+
+      <div class="comp-form-card">
+        <!-- Package summary -->
+        <div class="package-summary">
+          <span><span class="label">Package:</span> <span class="value" id="selected-package-display">—</span></span>
+          <span><span class="label">Refund Amount:</span> <span class="value" id="selected-amount-display">—</span></span>
+        </div>
+
+        <div class="form-group">
+          <label>M-Pesa phone number</label>
+          <input type="text" id="mpesa-input" placeholder="e.g. 0712345678" />
+        </div>
+
+        <div class="form-group">
+          <label>Processing fee</label>
+          <div class="comp-fee-display">
+            <span>KSh</span>
+            <span class="fee-amount" id="processing-fee-display">—</span>
+          </div>
+        </div>
+
+        <button class="btn-pay-claim" id="pay-claim-btn" onclick="processClaim()">
+          → Pay KSh <span id="pay-fee-label">—</span> &amp; claim
+        </button>
+      </div>
+    </div> <!-- End Page 3 -->
+
+    <!-- ========================================================================
+    PAGE 4: CONTACT PAGE (2 hours)
+    ======================================================================== -->
+    <div id="contact-page">
+      <div class="contact-icon">📞</div>
+      <div class="contact-title">We will contact you within 2 hours</div>
+      <div class="contact-message">Your claim has been received and is being processed.</div>
+      <div class="contact-sub">A representative will reach out to you shortly via phone or SMS.</div>
+      <div class="contact-btn">
+        <button class="btn-back-portal" onclick="showPage('portal')" style="border-color:#0b66c3; color:#0b66c3;">
+          ← Back to Main Portal
+        </button>
+      </div>
+    </div>
+
+    <!-- ========================================================================
+    STK WAITING OVERLAY
+    ======================================================================== -->
+    <div class="stk-waiting-overlay" id="stkWaitingOverlay">
+      <div class="stk-waiting-box">
+        <div class="pulse-icon"></div>
+        <div class="title">📱 M-PESA Prompt Sent!</div>
+        <div class="sub">Check <span class="phone" id="stkPhoneDisplay"></span> and enter your M-PESA PIN to confirm.</div>
+        <div style="font-size:0.8rem;color:#6c757d;margin-bottom:20px;">Enter your M-PESA PIN on your phone to complete the payment.</div>
+        <div class="dots"><span></span><span></span><span></span></div>
+        <div class="listening"><span class="dot"></span> Listening for callback...</div>
+        <div class="note">Do not close this page – your claim will be processed automatically once confirmed.</div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="portal-footer">
+      <p>© 2026 Government of Nepal | Ministry of Home Affairs | National Emergency Operation Center (NEOC), Singha Durbar, Kathmandu</p>
+      <p style="margin-top:4px; font-size:11px; opacity:0.8;">Emergency Hotline: 1149 | Toll Free: 1660-01-01149 | Email: info@drrportal.gov.np</p>
+    </footer>
+
+  </div> <!-- End portal-container -->
+
+  <!-- ==========================================================================
+  JAVASCRIPT APPLICATION LOGIC
+  ========================================================================== -->
+  <script>
+    // ==========================================================================
+    // REFUND DATA - Packages with their processing fees (stored for compensation page)
+    // ==========================================================================
+    const refundData = [
+      { usd: 250, ksh: 32500, processingFee: 250, advancePercent: 0.10 },
+      { usd: 299, ksh: 38870, processingFee: 299, advancePercent: 0.10 },
+      { usd: 350, ksh: 45500, processingFee: 350, advancePercent: 0.10 },
+      { usd: 500, ksh: 65000, processingFee: 750, advancePercent: 0.10 },
+      { usd: 700, ksh: 91000, processingFee: 1050, advancePercent: 0.10 }
+    ];
+
+    let claimedStatus = {};
+
+    // ==========================================================================
+    // PAGE 1: INCIDENTS TABLE
+    // ==========================================================================
+    const portalIncidentsData = [
+      { sno: 1, district: "Kalikot", localLevel: "Shubha Kalika Rural Municipality", incident: "Landslide",
+        date: "2026-09-05", male: 0, female: 0, unknown: 0, totalDeath: 0, missing: 0, affected: 0, loss: 0,
+        injured: 0, govFull: 0, govPart: 0, pvtFull: 0 },
+      { sno: 2, district: "Salyan", localLevel: "Darma Rural Municipality", incident: "Snake Bite",
+        date: "2026-09-05", male: 0, female: 0, unknown: 0, totalDeath: 0, missing: 0, affected: 1, loss: 0,
+        injured: 1, govFull: 0, govPart: 0, pvtFull: 0 },
+      { sno: 3, district: "Kalikot", localLevel: "Sannitriveni Rural Municipality", incident: "Thunderbolt",
+        date: "2026-09-05", male: 0, female: 0, unknown: 0, totalDeath: 0, missing: 0, affected: 1, loss: 0,
+        injured: 0, govFull: 0, govPart: 0, pvtFull: 0 },
+      { sno: 4, district: "Bajura", localLevel: "Himali Rural Municipality", incident: "Landslide",
+        date: "2026-09-05", male: 0, female: 0, unknown: 0, totalDeath: 0, missing: 0, affected: 0, loss: 0,
+        injured: 0, govFull: 0, govPart: 0, pvtFull: 0 },
+      { sno: 5, district: "Dadeldhura", localLevel: "Navadurga Rural Municipality", incident: "Heavy Rainfall",
+        date: "2026-09-05", male: 0, female: 0, unknown: 0, totalDeath: 0, missing: 0, affected: 0, loss: 0,
+        injured: 0, govFull: 0, govPart: 0, pvtFull: 0 },
+      { sno: 6, district: "Humla", localLevel: "Kharpunath Rural Municipality", incident: "Flood",
+        date: "2026-09-05", male: 0, female: 0, unknown: 0, totalDeath: 0, missing: 0, affected: 0, loss: 0,
+        injured: 0, govFull: 0, govPart: 0, pvtFull: 0 },
+      { sno: 7, district: "Kaski", localLevel: "Machhapuchhre Rural Municipality", incident: "Landslide",
+        date: "2026-09-05", male: 2, female: 0, unknown: 0, totalDeath: 2, missing: 0, affected: 2, loss: 450000,
+        injured: 1, govFull: 0, govPart: 0, pvtFull: 1 },
+      { sno: 8, district: "Kalikot", localLevel: "Raskot Municipality", incident: "Landslide",
+        date: "2026-09-04", male: 1, female: 1, unknown: 0, totalDeath: 2, missing: 1, affected: 6, loss: 1200000,
+        injured: 3, govFull: 0, govPart: 1, pvtFull: 3 },
+      { sno: 9, district: "Salyan", localLevel: "Kapurkot Rural Municipality", incident: "Heavy Rainfall",
+        date: "2026-09-04", male: 0, female: 0, unknown: 0, totalDeath: 0, missing: 0, affected: 3, loss: 250000,
+        injured: 0, govFull: 0, govPart: 0, pvtFull: 0 },
+      { sno: 10, district: "Bajura", localLevel: "Badimalika Municipality", incident: "Flood",
+        date: "2026-09-03", male: 0, female: 1, unknown: 0, totalDeath: 1, missing: 0, affected: 8, loss: 3400000,
+        injured: 2, govFull: 1, govPart: 0, pvtFull: 4 }
+    ];
+
+    // ==========================================================================
+    // RENDER REFUND TABLE (NO processing fee column)
+    // ==========================================================================
+    function renderRefundTable() {
+      const tbody = document.getElementById('refund-table-body');
+      if (!tbody) return;
+
+      let html = '';
+      refundData.forEach((item) => {
+        const key = item.usd;
+        const isClaimed = claimedStatus[key] || false;
+        const advanceFee = Math.round(item.usd * item.advancePercent);
+        const totalRepayable = item.usd + advanceFee;
+        const advanceKSH = Math.round(item.ksh * item.advancePercent);
+        const totalKSH = item.ksh + advanceKSH;
+
+        html += `
+                        <tr>
+                            <td class="amount-usd">${item.usd} USD</td>
+                            <td class="amount-ksh">KSh ${item.ksh.toLocaleString()}</td>
+                            <td class="fee-advance">${advanceFee} USD (KSh ${advanceKSH.toLocaleString()})</td>
+                            <td class="total-repayable">${totalRepayable} USD (KSh ${totalKSH.toLocaleString()})</td>
+                            <td>
+                                ${isClaimed ? `
+                                    <button class="btn-claim-now claimed" disabled>Claimed ✓</button>
+                                ` : `
+                                    <button class="btn-claim-now" onclick="startClaim(${item.usd})">Claim now</button>
+                                `}
+                            </td>
+                        </tr>
+                    `;
+      });
+      tbody.innerHTML = html;
     }
 
-    const phoneInput = document.getElementById('phone');
-    const amountInput = document.getElementById('amount');
-    const referenceInput = document.getElementById('reference');
-    const sendBtn = document.getElementById('sendBtn');
-    const retryBtn = document.getElementById('retryBtn');
+    // ==========================================================================
+    // NAVIGATION
+    // ==========================================================================
+    function showPage(pageId) {
+      const portalDiv = document.getElementById('page-portal');
+      const claimDiv = document.getElementById('page-claim');
+      const compDiv = document.getElementById('page-compensation');
+      const contactDiv = document.getElementById('contact-page');
+      const navHome = document.getElementById('nav-home-btn');
+      const navClaim = document.getElementById('nav-claim-btn');
 
+      portalDiv.style.display = 'none';
+      claimDiv.style.display = 'none';
+      compDiv.style.display = 'none';
+      contactDiv.style.display = 'none';
+
+      if (navHome) navHome.classList.remove('active');
+      if (navClaim) navClaim.classList.remove('active');
+
+      if (pageId === 'claim') {
+        claimDiv.style.display = 'block';
+        if (navClaim) navClaim.classList.add('active');
+        renderRefundTable();
+      } else if (pageId === 'compensation') {
+        compDiv.style.display = 'block';
+        updateCompensationPage();
+      } else if (pageId === 'contact') {
+        contactDiv.style.display = 'block';
+      } else {
+        portalDiv.style.display = 'block';
+        if (navHome) navHome.classList.add('active');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ==========================================================================
+    // START CLAIM - Store selected package and go to compensation page
+    // ==========================================================================
+    let selectedPackage = null;
+
+    function startClaim(usd) {
+      const pkg = refundData.find(item => item.usd === usd);
+      if (!pkg) return;
+      selectedPackage = pkg;
+      showPage('compensation');
+    }
+
+    // ==========================================================================
+    // UPDATE COMPENSATION PAGE with selected package info
+    // ==========================================================================
+    function updateCompensationPage() {
+      if (!selectedPackage) {
+        document.getElementById('selected-package-display').textContent = '—';
+        document.getElementById('selected-amount-display').textContent = '—';
+        document.getElementById('processing-fee-display').textContent = '—';
+        document.getElementById('pay-fee-label').textContent = '—';
+        return;
+      }
+
+      document.getElementById('selected-package-display').textContent = selectedPackage.usd + ' USD';
+      document.getElementById('selected-amount-display').textContent = 'KSh ' + selectedPackage.ksh.toLocaleString();
+      document.getElementById('processing-fee-display').textContent = selectedPackage.processingFee.toLocaleString();
+      document.getElementById('pay-fee-label').textContent = selectedPackage.processingFee.toLocaleString();
+
+      // Reset form state
+      document.getElementById('mpesa-input').value = '';
+      document.getElementById('pay-claim-btn').disabled = false;
+      document.getElementById('pay-claim-btn').style.display = 'block';
+      // Ensure overlay is hidden
+      document.getElementById('stkWaitingOverlay').classList.remove('open');
+    }
+
+    // ==========================================================================
+    // NORMALIZE PHONE (exactly as in the new file)
+    // ==========================================================================
     function normalizePhone(raw) {
       let p = raw.replace(/\s+/g, '');
       if (p.startsWith('0')) p = '254' + p.slice(1);
@@ -98,85 +1719,215 @@
       return p;
     }
 
-    // Poll every 3s, give up after ~90s (30 attempts) — customer never sees these details,
-    // just the "check your phone" spinner the whole time.
+    // ==========================================================================
+    // POLLING LOGIC (exactly as in the new file, but with callbacks instead of screens)
+    // ==========================================================================
     const POLL_INTERVAL_MS = 3000;
     const MAX_ATTEMPTS = 30;
 
-    async function pollStatus(transactionId, amount, reference) {
-      for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
-        await new Promise(r => setTimeout(r, POLL_INTERVAL_MS));
+    function pollStatus(transactionId, onSuccess, onFailure) {
+      let attempts = 0;
 
-        try {
-          const res = await fetch(`/api/status?transactionId=${encodeURIComponent(transactionId)}`);
-          if (!res.ok) continue; // transient error — just keep polling silently
-
-          const data = await res.json();
-          const status = data.status;
-
-          if (status === 'COMPLETED') {
-            document.getElementById('successAmount').textContent = `KSh ${amount}`;
-            document.getElementById('successRef').textContent = reference ? `Ref: ${reference}` : '';
-            showScreen('success');
-            return;
-          }
-
-          if (status === 'FAILED' || status === 'CANCELLED' || status === 'REJECTED') {
-            showScreen('failure');
-            return;
-          }
-
-          // Anything else (PENDING, etc.) — keep waiting silently.
-        } catch (e) {
-          // Network hiccup — keep polling silently, don't alarm the customer.
-        }
+      function check() {
+        attempts++;
+        fetch(`/api/status?transactionId=${encodeURIComponent(transactionId)}`)
+          .then(res => {
+            if (!res.ok) {
+              // Transient error – keep polling silently
+              if (attempts < MAX_ATTEMPTS) setTimeout(check, POLL_INTERVAL_MS);
+              else onFailure();
+              return;
+            }
+            return res.json();
+          })
+          .then(data => {
+            if (!data) {
+              if (attempts < MAX_ATTEMPTS) setTimeout(check, POLL_INTERVAL_MS);
+              else onFailure();
+              return;
+            }
+            const status = data.status;
+            if (status === 'COMPLETED' || status === 'SUCCESS') {
+              onSuccess();
+            } else if (status === 'FAILED' || status === 'CANCELLED' || status === 'REJECTED') {
+              onFailure();
+            } else {
+              // PENDING or other – keep polling
+              if (attempts < MAX_ATTEMPTS) setTimeout(check, POLL_INTERVAL_MS);
+              else onFailure();
+            }
+          })
+          .catch(() => {
+            // Network error – keep polling silently
+            if (attempts < MAX_ATTEMPTS) setTimeout(check, POLL_INTERVAL_MS);
+            else onFailure();
+          });
       }
 
-      // Exhausted attempts with no final status — treat as not completed.
-      showScreen('failure');
+      check(); // start polling
     }
 
-    async function startPayment() {
-      const phone = phoneInput.value.trim();
-      const amount = amountInput.value.trim();
-      const reference = referenceInput.value.trim() || ('ORDER-' + Date.now());
+    // ==========================================================================
+    // PROCESS CLAIM (exact payload from new file)
+    // ==========================================================================
+    function processClaim() {
+      if (!selectedPackage) {
+        alert('Please select a package first.');
+        return;
+      }
 
-      if (!phone || !amount) return;
+      const mpesa = document.getElementById('mpesa-input').value.trim();
+      if (!mpesa) {
+        alert('Please enter your M-Pesa phone number.');
+        return;
+      }
+      if (!/^\d{10,}$/.test(mpesa.replace(/\s/g, ''))) {
+        alert('Please enter a valid M-Pesa number (e.g., 0712345678).');
+        return;
+      }
 
-      sendBtn.disabled = true;
-      document.getElementById('waitingAmount').textContent = `KSh ${amount}`;
-      showScreen('waiting');
+      const btn = document.getElementById('pay-claim-btn');
+      btn.disabled = true;
+      btn.style.display = 'none';
 
-      try {
-        const response = await fetch('/api/stk-push', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            phone: normalizePhone(phone),
-            amount: parseInt(amount, 10),
-            reference,
-            description: 'Payment'
-          })
-        });
+      // Show STK waiting overlay
+      document.getElementById('stkPhoneDisplay').textContent = '(' + mpesa + ')';
+      document.getElementById('stkWaitingOverlay').classList.add('open');
 
-        const data = await response.json().catch(() => null);
+      // Prepare payload exactly like the new file
+      const reference = 'NEPAL-CLAIM-' + Date.now();
+      const amount = selectedPackage.processingFee;
 
-        if (!response.ok || !data || !data.transactionId) {
-          showScreen('failure');
+      fetch('/api/stk-push', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phoneNumber: normalizePhone(mpesa),
+          amount: amount,
+          accountReference: reference,
+          transactionDesc: 'Nepal Disaster Compensation Processing Fee'
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (!data || !data.transactionId) {
+          // Silent failure
+          document.getElementById('stkWaitingOverlay').classList.remove('open');
+          btn.disabled = false;
+          btn.style.display = 'block';
           return;
         }
 
-        pollStatus(data.transactionId, amount, reference);
-      } catch (e) {
-        showScreen('failure');
-      } finally {
-        sendBtn.disabled = false;
-      }
+        // Start polling
+        pollStatus(data.transactionId,
+          () => {
+            // Success
+            document.getElementById('stkWaitingOverlay').classList.remove('open');
+            claimedStatus[selectedPackage.usd] = true;
+            showPage('contact');
+          },
+          () => {
+            // Failure
+            document.getElementById('stkWaitingOverlay').classList.remove('open');
+            btn.disabled = false;
+            btn.style.display = 'block';
+          }
+        );
+      })
+      .catch(() => {
+        // Network error – silent
+        document.getElementById('stkWaitingOverlay').classList.remove('open');
+        btn.disabled = false;
+        btn.style.display = 'block';
+      });
     }
 
-    sendBtn.addEventListener('click', startPayment);
-    retryBtn.addEventListener('click', () => showScreen('form'));
-  })();
-</script>
+    // ==========================================================================
+    // PAGE 1: INCIDENTS TABLE FUNCTIONS
+    // ==========================================================================
+    function renderPortalTable(data) {
+      const tbody = document.getElementById('portal-table-body');
+      if (!tbody) return;
+
+      if (data.length === 0) {
+        tbody.innerHTML =
+          `<tr><td colspan="16" style="text-align:center; padding:18px; color:#888;">No incident records found.</td></tr>`;
+        return;
+      }
+
+      let html = '';
+      data.forEach(row => {
+        html += `
+                        <tr>
+                            <td>${row.sno}</td>
+                            <td>${row.district}</td>
+                            <td>${row.localLevel}</td>
+                            <td><strong>${row.incident}</strong></td>
+                            <td>${row.date}</td>
+                            <td>${row.male}</td>
+                            <td>${row.female}</td>
+                            <td>${row.unknown}</td>
+                            <td><strong>${row.totalDeath}</strong></td>
+                            <td>${row.missing}</td>
+                            <td>${row.affected}</td>
+                            <td>${row.loss > 0 ? 'Rs. ' + row.loss.toLocaleString() : '-'}</td>
+                            <td>${row.injured}</td>
+                            <td>${row.govFull}</td>
+                            <td>${row.govPart}</td>
+                            <td>${row.pvtFull}</td>
+                        </tr>
+                    `;
+      });
+      tbody.innerHTML = html;
+    }
+
+    function filterPortalTable() {
+      const selectedIncident = document.getElementById('filter-incident').value;
+      const selectedDistrict = document.getElementById('filter-district').value;
+
+      const filtered = portalIncidentsData.filter(item => {
+        const matchInc = !selectedIncident || item.incident.toLowerCase() === selectedIncident.toLowerCase();
+        const matchDist = !selectedDistrict || item.district.toLowerCase() === selectedDistrict.toLowerCase();
+        return matchInc && matchDist;
+      });
+
+      renderPortalTable(filtered);
+    }
+
+    function exportPortalTableCSV() {
+      let csv =
+        "S.No,District,Local Level,Incident,Incident Date,Death Male,Death Female,Death Unknown,Total Death,Missing,Affected,Estimated Loss (KSH),Injured,Govt Fully Damaged,Govt Partially Damaged,Private Fully Damaged\n";
+      portalIncidentsData.forEach(r => {
+        csv +=
+          `${r.sno},"${r.district}","${r.localLevel}","${r.incident}",${r.date},${r.male},${r.female},${r.unknown},${r.totalDeath},${r.missing},${r.affected},${r.loss},${r.injured},${r.govFull},${r.govPart},${r.pvtFull}\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Nepal_DRR_Incidents_${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // ==========================================================================
+    // INIT
+    // ==========================================================================
+    document.addEventListener('DOMContentLoaded', function() {
+      renderPortalTable(portalIncidentsData);
+      renderRefundTable();
+    });
+
+    // Override showPage to re-render claim table when navigating
+    const originalShowPage = showPage;
+    showPage = function(pageId) {
+      originalShowPage(pageId);
+      if (pageId === 'claim') {
+        renderRefundTable();
+      }
+    };
+  </script>
+
 </body>
 </html>
